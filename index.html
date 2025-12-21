@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome - Skills Test</title>
+<link rel="stylesheet" href="bootstrap5/css/bootstrap.min.css">
+<style>
+    body, html {
+        height: 100%;
+        margin: 0;
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(135deg, #470C8A, #f5f8fa);
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        color: white;
+        text-align: center;
+        position: relative;
+        cursor: default;
+    }
+
+    /* ---------- Transparent Header Image (Parallax) ---------- */
+    .header-bg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0.15;   
+        width: 90%;     
+        pointer-events: none;
+        z-index: 0;
+        transition: transform 0.1s ease-out;
+    }
+
+    h1, p, .start-btn {
+        position: relative; 
+        z-index: 1;
+    }
+
+    h1 {
+        font-size: 3em;
+        margin-bottom: 20px;
+        animation: fadeInDown 2s ease-out;
+    }
+
+    p {
+        font-size: 1.2em;
+        margin-bottom: 40px;
+        animation: fadeInUp 2s ease-out;
+    }
+
+    .start-btn {
+        padding: 15px 40px;
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #470C8A;
+        background: white;
+        border-radius: 50px;
+        border: none;
+        cursor: pointer;
+        animation: pulse 2s infinite;
+        transition: transform 0.3s, background 0.3s;
+    }
+
+    .start-btn:hover {
+        transform: scale(1.1);
+        background: #e6e6e6;
+    }
+
+    /* ---------- Animations ---------- */
+    @keyframes fadeInDown {
+        0% { opacity: 0; transform: translateY(-50px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+        0% { opacity: 0; transform: translateY(50px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
+</style>
+</head>
+<body>
+
+<!-- ---------- Transparent Background Image ---------- -->
+<img src="images/new_header.png" class="header-bg" alt="Header Background">
+
+<h1>Welcome to Your Skills Adventure</h1>
+<p>Discover your strengths and explore the career path that fits you best!</p>
+<button class="start-btn" onclick="startJourney()">Start the Journey</button>
+
+<script>
+function startJourney() {
+    window.location.href = "test.html";
+}
+
+// ---------- Parallax Effect for Background ----------
+const bg = document.querySelector('.header-bg');
+document.addEventListener('mousemove', (e) => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 30; // adjust movement range
+    const y = (e.clientY / window.innerHeight - 0.5) * 30;
+    bg.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
+});
+</script>
+
+</body>
+</html>
