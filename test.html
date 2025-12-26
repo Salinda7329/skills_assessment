@@ -270,8 +270,7 @@
 
             /* Controls move below header */
             .sticky-header {
-                flex-direction: column;
-                gap: 8px;
+                position: relative;
             }
 
             .sticky-header .controls {
@@ -282,7 +281,10 @@
             /* Progress bar */
 
             #progressContainer {
-                top: 60px;
+                position: sticky;
+                top: 0;
+                z-index: 999;
+                background: #f5f8fa;
             }
 
             #progressWrapper {
