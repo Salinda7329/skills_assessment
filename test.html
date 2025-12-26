@@ -36,8 +36,8 @@
             top: 0;
             z-index: 1000;
             background: #f5f8fa;
-            border-bottom: 2px solid #470C8A;
-            padding: 10px 20px;
+            border-bottom: 1px solid #470C8A;
+            padding: 5px 10px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -69,6 +69,14 @@
             margin: 0;
             font-weight: 600;
         }
+
+        .header-img {
+            width: 100%;
+            max-width: 1000px;
+            height: 70px;
+            object-fit: contain;
+        }
+
 
         /* ---------- PROGRESS ---------- */
         #progressContainer {
@@ -109,8 +117,8 @@
             background: #fff;
             border: 2px solid #470C8A;
             border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
+            padding: 10px;
+            margin-bottom: 5px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -294,7 +302,7 @@
             .question-card {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 12px;
+                gap: 5px;
             }
 
             .question-card input[type="checkbox"] {
@@ -348,6 +356,30 @@
                 padding: 12px;
             }
 
+
+            .header-img {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .brand h5 {
+                font-size: 16px;
+                margin-top: 6px;
+                text-align: center;
+            }
+
+            .controls {
+                display: flex;
+                justify-content: center;
+                gap: 6px;
+                margin-top: 6px;
+            }
+
+            .controls button {
+                padding: 4px 8px;
+                font-size: 12px;
+            }
+
             /* Give space so content not hidden behind bar */
             body {
                 padding-bottom: 80px;
@@ -387,8 +419,8 @@
 
     <div class="sticky-header">
         <div class="brand">
-            <img src="images/new_header.png" alt="Logo" style="height:100px; width:1000px;">
-            <h5 class="">Find Your Ideal Path</h5>
+            <img src="images/new_header.png" alt="Logo" class="header-img">
+            <h5>Find Your Ideal Path</h5>
         </div>
 
         <div class="controls">
