@@ -86,6 +86,7 @@
             color: white;
             text-align: center;
             font-weight: bold;
+            font-size: 15px;
             border-radius: 12px;
         }
 
@@ -414,9 +415,13 @@
         document.getElementById("nextBtn").textContent =
             (step + 1) * perStep >= questions.length ? "Submit" : "Next";
 
-        const percent = Math.round(((step * perStep) / questions.length) * 100);
-        document.getElementById("progressBar").style.width = percent + "%";
-        document.getElementById("progressBar").textContent = percent + "%";
+        // ✅ FIXED progress percentages
+        const progressSteps = [17, 34, 51, 68, 85, 100];
+        const percent = progressSteps[step] ?? 0;
+
+        const bar = document.getElementById("progressBar");
+        bar.style.width = percent + "%";
+        bar.textContent = percent + "%";
     }
 
     nextBtn.onclick = () => {
