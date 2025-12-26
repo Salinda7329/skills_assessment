@@ -71,10 +71,19 @@
         }
 
         /* ---------- PROGRESS ---------- */
+        #progressContainer {
+            position: sticky;
+            top: 70px;
+            /* height of your header */
+            background: #f5f8fa;
+            padding: 8px 0;
+            z-index: 998;
+        }
+
         #progressWrapper {
             width: 90%;
             height: 20px;
-            margin: 10px auto;
+            margin: auto;
             background: #ddd;
             border-radius: 12px;
         }
@@ -263,6 +272,11 @@
             }
 
             /* Progress bar */
+
+            #progressContainer {
+                top: 60px;
+            }
+
             #progressWrapper {
                 width: 95%;
                 height: 18px;
@@ -312,6 +326,32 @@
                 font-size: 60px;
                 top: 10px;
             }
+
+            /* Sticky action bar */
+            .mobile-action-bar {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background: #ffffff;
+                padding: 10px;
+                display: flex;
+                justify-content: space-between;
+                gap: 10px;
+                box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
+                z-index: 999;
+            }
+
+            .mobile-action-bar button {
+                flex: 1;
+                font-size: 16px;
+                padding: 12px;
+            }
+
+            /* Give space so content not hidden behind bar */
+            body {
+                padding-bottom: 80px;
+            }
         }
     </style>
 </head>
@@ -358,15 +398,17 @@
         </div>
     </div>
 
-    <div id="progressWrapper">
-        <div id="progressBar">0%</div>
+    <div id="progressContainer">
+        <div id="progressWrapper">
+            <div id="progressBar">0%</div>
+        </div>
     </div>
 
     <div id="zoomContainer">
 
         <form id="quizForm">
             <div id="questionsContainer"></div>
-            <div class="text-center">
+            <div class="text-center mobile-action-bar">
                 <button type="button" id="prevBtn" class="btn btn-primary" style="display:none">Previous</button>
                 <button type="button" id="nextBtn" class="btn btn-primary">Next</button>
             </div>
