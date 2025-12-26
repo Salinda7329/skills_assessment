@@ -162,33 +162,59 @@
             border: 1px solid #ccc;
         }
 
-        /* Glow effect */
         .glow-btn {
-            animation: glowPulse 1.5s infinite;
+            position: relative;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            z-index: 1;
+            overflow: hidden;
         }
 
-        @keyframes glowPulse {
+        /* Glowing border */
+        .glow-btn::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 6px;
+            background: #0dd728;
+            z-index: -1;
+            filter: blur(6px);
+            opacity: 0.9;
+            animation: borderGlow 1.5s infinite;
+        }
+
+
+        @keyframes borderGlow {
             0% {
-                box-shadow: 0 0 0 0 rgba(0, 200, 83, 0.7);
+                background-color: #0dd728;
+                opacity: 0.6;
             }
 
-            70% {
-                box-shadow: 0 0 20px 15px rgba(0, 200, 83, 0);
+            50% {
+                background-color: #bbb6b6;
+                opacity: 1;
             }
 
             100% {
-                box-shadow: 0 0 0 0 rgba(0, 200, 83, 0);
+                background-color: #0dd728;
+                opacity: 0.6;
             }
         }
+
+
 
         /* Arrow pointing to button */
         .arrow {
             position: absolute;
-            top: 60px;
+            top: 30px;
             /* adjust distance from top of parent div */
             left: 50%;
             transform: translateX(-50%);
-            font-size: 50px;
+            font-size: 100px;
             animation: bounce 1s infinite;
             color: #28a745;
             /* same as button color */
@@ -279,12 +305,20 @@
 
             <label class="mt-3"><b>WhatsApp Number</b></label>
             <input type="text" id="whatsAppNumber" placeholder="Ex: 771234567">
-            <small class="text-muted">Enter number without +94</small>
 
-
-            <button class="btn btn-success mt-3 glow-btn" onclick="downloadPDF()">Download PDF</button>
             <span class="arrow">⬇</span>
-            <button class="btn btn-danger mt-3" onclick="location.href='index.html'">Reset</button>
+
+            <!-- Buttons Row -->
+            <div class="d-flex justify-content-center align-items-center gap-3 mt-4 position-relative">
+                <button class="btn btn-success glow-btn" onclick="downloadPDF()">
+                    Download PDF
+                </button>
+
+
+                <button class="btn btn-danger" onclick="location.href='index.html'">
+                    Reset
+                </button>
+            </div>
         </div>
 
     </div>
@@ -553,39 +587,39 @@
 
     /* ---------- QUESTIONS DATA ---------- */
     const questions = [
-        { id: "q01", text: "I enjoy leading a group and persuading others.", shape: "Star" },
-        { id: "q02", text: "I like speaking in front of people.", shape: "Star" },
-        { id: "q03", text: "I take risks to achieve goals.", shape: "Star" },
-        { id: "q04", text: "I enjoy negotiating or selling ideas.", shape: "Star" },
-        { id: "q05", text: "I feel confident motivating others.", shape: "Star" },
-        { id: "q06", text: "I enjoy organizing group projects.", shape: "Star" },
+        { id: "q01", text: "Leading a group.", shape: "Star" },
+        { id: "q02", text: "Speaking on a stage.", shape: "Star" },
+        { id: "q03", text: "Take risks to achieve goals.", shape: "Star" },
+        { id: "q04", text: "Selling ideas.", shape: "Star" },
+        { id: "q05", text: "Motivating others.", shape: "Star" },
+        { id: "q06", text: "Organizing group projects.", shape: "Star" },
 
-        { id: "q07", text: "I enjoy structured and organized work.", shape: "Square" },
-        { id: "q08", text: "I pay attention to details.", shape: "Square" },
-        { id: "q09", text: "I like schedules and routines.", shape: "Square" },
-        { id: "q10", text: "I prefer predictable tasks.", shape: "Square" },
-        { id: "q11", text: "I follow rules carefully.", shape: "Square" },
-        { id: "q12", text: "I enjoy record keeping.", shape: "Square" },
+        { id: "q07", text: "Enjoy structured work.", shape: "Square" },
+        { id: "q08", text: "Pay attention to details.", shape: "Square" },
+        { id: "q09", text: "Like timetables.", shape: "Square" },
+        { id: "q10", text: "Prefer tasks with clear output.", shape: "Square" },
+        { id: "q11", text: "Follow rules carefully.", shape: "Square" },
+        { id: "q12", text: "Enjoy record keeping.", shape: "Square" },
 
-        { id: "q13", text: "I enjoy solving logical problems.", shape: "Diamond" },
-        { id: "q14", text: "I like analyzing systems.", shape: "Diamond" },
-        { id: "q15", text: "I enjoy technical challenges.", shape: "Diamond" },
-        { id: "q16", text: "I like designing solutions.", shape: "Diamond" },
-        { id: "q17", text: "I enjoy reasoning tasks.", shape: "Diamond" },
-        { id: "q18", text: "I enjoy learning technology.", shape: "Diamond" },
+        { id: "q13", text: "Solving logical problems.", shape: "Diamond" },
+        { id: "q14", text: "Analyzing systems.", shape: "Diamond" },
+        { id: "q15", text: "Enjoy technical challenges.", shape: "Diamond" },
+        { id: "q16", text: "Like designing solutions.", shape: "Diamond" },
+        { id: "q17", text: "Enjoy breaking complex tasks into parts.", shape: "Diamond" },
+        { id: "q18", text: "Enjoy learning technology.", shape: "Diamond" },
 
-        { id: "q19", text: "I enjoy helping people.", shape: "Circle" },
-        { id: "q20", text: "I like teaching others.", shape: "Circle" },
-        { id: "q21", text: "I value teamwork.", shape: "Circle" },
+        { id: "q19", text: "Helping people.", shape: "Circle" },
+        { id: "q20", text: "Teaching others.", shape: "Circle" },
+        { id: "q21", text: "I like teamwork.", shape: "Circle" },
         { id: "q22", text: "I enjoy caring roles.", shape: "Circle" },
         { id: "q23", text: "I am empathetic.", shape: "Circle" },
-        { id: "q24", text: "I enjoy mentoring.", shape: "Circle" },
+        { id: "q24", text: "I enjoy teaching.", shape: "Circle" },
 
         { id: "q25", text: "I enjoy creative activities.", shape: "Triangle" },
         { id: "q26", text: "I like expressing ideas artistically.", shape: "Triangle" },
-        { id: "q27", text: "I enjoy originality.", shape: "Triangle" },
-        { id: "q28", text: "I enjoy visual design.", shape: "Triangle" },
-        { id: "q29", text: "I like performing.", shape: "Triangle" },
+        { id: "q27", text: "I like to be genuine.", shape: "Triangle" },
+        { id: "q28", text: "I enjoy visual arts.", shape: "Triangle" },
+        { id: "q29", text: "I like performing on a stage.", shape: "Triangle" },
         { id: "q30", text: "I enjoy brainstorming.", shape: "Triangle" },
 
         { id: "q31", text: "I enjoy hands-on work.", shape: "Rectangle" },
@@ -620,8 +654,8 @@
             { job: "Writer", skills: ["Storytelling", "Writing"] }
         ],
         Rectangle: [
-            { job: "Technician", skills: ["Hands-on", "Problem Solving"] },
-            { job: "Electrician", skills: ["Safety", "Troubleshooting"] }
+            { job: "Computer Hardware Technician", skills: ["Hands-on", "Problem Solving"] },
+            { job: "Networking", skills: ["Safety", "Troubleshooting"] }
         ]
     };
 
