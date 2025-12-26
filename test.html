@@ -671,16 +671,21 @@
 
         let waNumber = document.getElementById("whatsAppNumber").value.trim();
 
-        // Normalize WhatsApp number
-        if (waNumber.startsWith("0")) {
-            waNumber = waNumber.substring(1);
-        }
+        // ✅ Default number if user did not enter anything
+        if (waNumber === "") {
+            waNumber = "772009600"; // +94 77 200 9600
+        } else {
+            // Normalize WhatsApp number
+            if (waNumber.startsWith("0")) {
+                waNumber = waNumber.substring(1);
+            }
 
-        // Validate: must be exactly 9 digits
-        if (waNumber !== "" && !/^\d{9}$/.test(waNumber)) {
-            alert("Please enter a valid WhatsApp number");
-            document.getElementById("whatsAppNumber").focus();
-            return;
+            // Validate: must be exactly 9 digits
+            if (!/^\d{9}$/.test(waNumber)) {
+                alert("Please enter a valid WhatsApp number");
+                document.getElementById("whatsAppNumber").focus();
+                return;
+            }
         }
 
         const pdf = new jsPDF();
@@ -720,25 +725,41 @@
         /* ---------- FOOTER ---------- */
         pdf.setFontSize(9);
 
+        /* ---------- FOOTER ---------- */
         if (waNumber) {
-            const waLink =
-                `https://wa.me/+94${waNumber}?text=My_Skills_Assessment_Report`;
+            // Replace spaces in name with underscores
+            const formattedName = name.trim().replace(/\s+/g, "_");
 
-            pdf.text("WhatsApp:", 20, pageHeight - 15);
+            const waLink = `https://wa.me/+94${waNumber}?text=My_Skills_Assessment_Report-${formattedName}`;
+
+            // Instruction text (bold, bigger, red)
+            pdf.setFont("helvetica", "bold");
+            pdf.setFontSize(12);
+            pdf.setTextColor(255, 0, 0); // red
+            pdf.text("Click the link below to know more about your report:", 20, pageHeight - 20);
+
+            // WhatsApp link (blue)
+            pdf.setFont("helvetica", "normal");
+            pdf.setFontSize(11);
             pdf.setTextColor(0, 0, 255);
             pdf.textWithLink(
                 waLink,
-                40,
-                pageHeight - 15,
+                20,
+                pageHeight - 10,
                 { url: waLink }
             );
+
+            // Reset color for any further text
             pdf.setTextColor(0, 0, 0);
         }
 
+        // Footer centered
+        pdf.setFontSize(9);
+        pdf.setFont("helvetica", "normal");
         pdf.text(
             "Generated via Skills Assessment System",
             pageWidth / 2,
-            pageHeight - 8,
+            pageHeight - 5,
             { align: "center" }
         );
 
