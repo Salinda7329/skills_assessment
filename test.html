@@ -11,6 +11,30 @@
     <script src="jspdf/jspdf.umd.min.js"></script>
     <script src="bootstrap5/js/bootstrap.bundle.min.js"></script>
 
+    <script>
+        window.addEventListener('load', () => {
+            const modalEl = document.getElementById('instructionsModal');
+            const instructionsModal = new bootstrap.Modal(modalEl);
+            const audio = document.getElementById('welcomeAudio');
+
+            // Show modal (audio won't autoplay, just show modal)
+            instructionsModal.show();
+
+            // Play audio on first user interaction (click on Start button)
+            const startBtn = modalEl.querySelector('.btn-primary');
+            startBtn.addEventListener('click', () => {
+                audio.play().catch(err => console.log("Audio play failed:", err));
+            });
+
+            // Stop audio when modal closes
+            modalEl.addEventListener('hide.bs.modal', () => {
+                audio.pause();
+                audio.currentTime = 0; // reset
+            });
+        });
+
+    </script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -394,31 +418,6 @@
     <audio id="welcomeAudio" src="images/welcome_audio.mp3"></audio>
     <audio id="guideAudio" src="images/result_guide.mp3"></audio>
 
-    <script>
-        window.addEventListener('load', () => {
-            const modalEl = document.getElementById('instructionsModal');
-            const instructionsModal = new bootstrap.Modal(modalEl);
-            const audio = document.getElementById('welcomeAudio');
-
-            // Show modal (audio won't autoplay, just show modal)
-            instructionsModal.show();
-
-            // Play audio on first user interaction (click on Start button)
-            const startBtn = modalEl.querySelector('.btn-primary');
-            startBtn.addEventListener('click', () => {
-                audio.play().catch(err => console.log("Audio play failed:", err));
-            });
-
-            // Stop audio when modal closes
-            modalEl.addEventListener('hide.bs.modal', () => {
-                audio.pause();
-                audio.currentTime = 0; // reset
-            });
-        });
-
-
-    </script>
-
     <div class="sticky-header">
         <div class="brand">
             <img src="images/new_header.png" alt="Logo" class="header-img">
@@ -494,10 +493,11 @@
                     <p>Please answer the questions honestly. Your results will suggest your personality type
                         and potential career paths.</p>
                     <ul>
-                        <li style="color: red;"><b>Click the checkboxes for activities you like.</b></li>
+                        <li style="color: red;">Click the checkboxes for activities <b>You Like.</b></li>
                     </ul>
                 </div>
                 <div class="modal-footer">
+                    <a href="help.html" class="btn btn-success">Help-සිංහල</a>
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Start Test</button>
                 </div>
             </div>
@@ -573,7 +573,7 @@
             (step + 1) * perStep >= questions.length ? "Submit" : "Next";
 
         // ✅ FIXED progress percentages
-        const progressSteps = [20, 40, 60,80,100];
+        const progressSteps = [20, 40, 60, 80, 100];
         const percent = progressSteps[step] ?? 0;
 
         const bar = document.getElementById("progressBar");
