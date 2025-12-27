@@ -573,7 +573,7 @@
             (step + 1) * perStep >= questions.length ? "Submit" : "Next";
 
         // ✅ FIXED progress percentages
-        const progressSteps = [17, 34, 51, 68, 85, 100];
+        const progressSteps = [20, 40, 60,80,100];
         const percent = progressSteps[step] ?? 0;
 
         const bar = document.getElementById("progressBar");
@@ -707,7 +707,7 @@
         y += 12;
 
         Object.keys(results).forEach(k => {
-            const percent = Math.round(results[k] / 6 * 100);
+            const percent = Math.round(results[k] / 5 * 100);
             pdf.text(`${k}: ${percent}%`, 20, y);
             y += 8;
         });
@@ -770,49 +770,48 @@
 
     /* ---------- QUESTIONS DATA ---------- */
     const questions = [
+        // STAR – Leadership & Influence
         { id: "q01", text: "Leading a group.", shape: "Star" },
-        { id: "q02", text: "Speaking on a stage.", shape: "Star" },
-        { id: "q03", text: "Take risks to achieve goals.", shape: "Star" },
-        { id: "q04", text: "Selling ideas.", shape: "Star" },
-        { id: "q05", text: "Motivating others.", shape: "Star" },
-        { id: "q06", text: "Organizing group projects.", shape: "Star" },
+        { id: "q02", text: "Public speaking", shape: "Star" },
+        { id: "q03", text: "Taking risks to achieve goals.", shape: "Star" },
+        { id: "q04", text: "Motivating people to perform better.", shape: "Star" },
+        { id: "q05", text: "Making decisions for a team.", shape: "Star" },
 
-        { id: "q07", text: "Enjoy structured work.", shape: "Square" },
-        { id: "q08", text: "Pay attention to details.", shape: "Square" },
-        { id: "q09", text: "Like timetables.", shape: "Square" },
-        { id: "q10", text: "Prefer tasks with clear output.", shape: "Square" },
-        { id: "q11", text: "Follow rules carefully.", shape: "Square" },
-        { id: "q12", text: "Enjoy record keeping.", shape: "Square" },
+        // SQUARE – Structure & Organization
+        { id: "q06", text: "Enjoying structured work.", shape: "Square" },
+        { id: "q07", text: "Paying attention to details.", shape: "Square" },
+        { id: "q08", text: "Following rules and procedures.", shape: "Square" },
+        { id: "q09", text: "Working with clear instructions.", shape: "Square" },
+        { id: "q10", text: "Maintaining records or documents.", shape: "Square" },
 
-        { id: "q13", text: "Solving logical problems.", shape: "Diamond" },
-        { id: "q14", text: "Analyzing systems.", shape: "Diamond" },
-        { id: "q15", text: "Enjoy technical challenges.", shape: "Diamond" },
-        { id: "q16", text: "Like designing solutions.", shape: "Diamond" },
-        { id: "q17", text: "Enjoy breaking complex tasks into parts.", shape: "Diamond" },
-        { id: "q18", text: "Enjoy learning technology.", shape: "Diamond" },
+        // DIAMOND – Logic & Technology
+        { id: "q11", text: "Solving logical problems.", shape: "Diamond" },
+        { id: "q12", text: "Analyzing systems or processes.", shape: "Diamond" },
+        { id: "q13", text: "Enjoying technical challenges.", shape: "Diamond" },
+        { id: "q14", text: "Designing solutions to real-world problems.", shape: "Diamond" },
+        { id: "q15", text: "Learning new technologies.", shape: "Diamond" },
 
-        { id: "q19", text: "Helping people.", shape: "Circle" },
-        { id: "q20", text: "Teaching others.", shape: "Circle" },
-        { id: "q21", text: "I like teamwork.", shape: "Circle" },
-        { id: "q22", text: "I enjoy caring roles.", shape: "Circle" },
-        { id: "q23", text: "I am empathetic.", shape: "Circle" },
-        { id: "q24", text: "I enjoy teaching.", shape: "Circle" },
+        // CIRCLE – Helping & People Skills
+        { id: "q16", text: "Helping people solve problems.", shape: "Circle" },
+        { id: "q17", text: "Teaching others.", shape: "Circle" },
+        { id: "q18", text: "Team spirit.", shape: "Circle" },
+        { id: "q19", text: "Caring and Sharing.", shape: "Circle" },
+        { id: "q20", text: "Understanding others' feelings.", shape: "Circle" },
 
-        { id: "q25", text: "I enjoy creative activities.", shape: "Triangle" },
-        { id: "q26", text: "I like expressing ideas artistically.", shape: "Triangle" },
-        { id: "q27", text: "I like to be genuine.", shape: "Triangle" },
-        { id: "q28", text: "I enjoy visual arts.", shape: "Triangle" },
-        { id: "q29", text: "I like performing on a stage.", shape: "Triangle" },
-        { id: "q30", text: "I enjoy brainstorming.", shape: "Triangle" },
+        // TRIANGLE – Creativity & Expression
+        { id: "q21", text: "Enjoying creative activities.", shape: "Triangle" },
+        { id: "q22", text: "Expressing ideas artistically.", shape: "Triangle" },
+        { id: "q23", text: "Brainstorming new ideas.", shape: "Triangle" },
+        { id: "q24", text: "Do presentations creatively.", shape: "Triangle" },
+        { id: "q25", text: "Working with visual designs.", shape: "Triangle" },
 
-        { id: "q31", text: "I enjoy hands-on work.", shape: "Rectangle" },
-        { id: "q32", text: "I like fixing things.", shape: "Rectangle" },
-        { id: "q33", text: "I enjoy building objects.", shape: "Rectangle" },
-        { id: "q34", text: "I enjoy physical work.", shape: "Rectangle" },
-        { id: "q35", text: "I enjoy practical tasks.", shape: "Rectangle" },
-        { id: "q36", text: "I like working with tools.", shape: "Rectangle" }
+        // RECTANGLE – Practical & Hands-on
+        { id: "q26", text: "Enjoying hands-on work.", shape: "Rectangle" },
+        { id: "q27", text: "Fixing or repairing things.", shape: "Rectangle" },
+        { id: "q28", text: "Building or assembling objects.", shape: "Rectangle" },
+        { id: "q29", text: "Working with tools or equipment.", shape: "Rectangle" },
+        { id: "q30", text: "Solving real-world problems.", shape: "Rectangle" }
     ];
-
     /* ---------- JOB DATA ---------- */
     const categoriesData = {
         Star: [
