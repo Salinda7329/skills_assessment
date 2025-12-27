@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personality Assessment</title>
+
+    <link rel="stylesheet" href="bootstrap5/css/bootstrap.min.css">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 10px;
+            /* Reduced for mobile */
+            font-family: sans-serif;
+        }
+
+        /* 1. Desktop Padding */
+        @media (min-width: 768px) {
+            body {
+                padding: 40px;
+            }
+
+            .table-container {
+                padding: 40px;
+            }
+        }
+
+        /* 2. Responsive Table Tweaks */
+        .table-container {
+            background: white;
+            padding: 15px;
+            /* Mobile padding */
+            border-radius: 12px;
+        }
+
+        /* Prevent text from squashing too much on mobile */
+        .table th,
+        .table td {
+            min-width: 120px;
+        }
+
+        .table td:first-child {
+            min-width: 50px;
+        }
+
+        /* ID column can be small */
+
+        /* 3. Force Bootstrap colors to appear in PDF */
+        @media print {
+            body {
+                background-color: white !important;
+                padding: 0;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            .table {
+                width: 100% !important;
+                border: 1px solid #000 !important;
+            }
+
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            @page {
+                size: landscape;
+                margin: 1cm;
+            }
+        }
+
+        /* Custom row colors for different shapes */
+        .category-star {
+            border-left: 5px solid #ffc107;
+        }
+
+        .category-square {
+            border-left: 5px solid #0d6efd;
+        }
+
+        .category-diamond {
+            border-left: 5px solid #6610f2;
+        }
+
+        .category-circle {
+            border-left: 5px solid #198754;
+        }
+
+        .category-triangle {
+            border-left: 5px solid #dc3545;
+        }
+
+        .category-rectangle {
+            border-left: 5px solid #6c757d;
+        }
+
+        /* Typography sizing for mobile */
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="table-container shadow-sm mt-2 mt-md-4">
+
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+                <div class="mb-3 mb-md-0">
+                    <h2 class="fw-bold">Sinhala Meaning (සිංහල තේරුම)</h2>
+                    <p class="text-muted mb-0">A comprehensive guide to your natural strengths.</p>
+                </div>
+                <button onclick="window.print()" class="btn btn-dark btn-lg no-print">
+                    Download PDF
+                </button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover align-middle">
+                    <thead class="table-dark text-nowrap">
+                        <tr>
+                            <th>ID</th>
+                            <th>Sinhala Meaning (සිංහල තේරුම)</th>
+                            <th>Statement</th>
+                            <th>Example (උදාහරණ)</th>
+                            <th>Category</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="category-star">
+                            <td>q01</td>
+                            <td>කණ්ඩායමකට නායකත්වය දීම.</td>
+                            <td>Leading a group.</td>
+                            <td>Being a captain or club president.</td>
+                            <td class="text-nowrap">🌟 Star</td>
+                        </tr>
+                        <tr class="category-star">
+                            <td>q02</td>
+                            <td>ප්‍රසිද්ධියේ කථා කිරීම.</td>
+                            <td>Public speaking.</td>
+                            <td>Giving a speech or presentation.</td>
+                            <td class="text-nowrap">🌟 Star</td>
+                        </tr>
+                        <tr class="category-star">
+                            <td>q03</td>
+                            <td>ඉලක්ක වෙනුවෙන් අවදානම් ගැනීම.</td>
+                            <td>Taking risks.</td>
+                            <td>Starting a new business idea.</td>
+                            <td class="text-nowrap">🌟 Star</td>
+                        </tr>
+                        <tr class="category-star">
+                            <td>q04</td>
+                            <td>මිනිසුන්ව දිරිමත් කිරීම.</td>
+                            <td>Motivating people.</td>
+                            <td>Encouraging a team to work harder.</td>
+                            <td class="text-nowrap">🌟 Star</td>
+                        </tr>
+                        <tr class="category-star">
+                            <td>q05</td>
+                            <td>කණ්ඩායමක් වෙනුවෙන් තීරණ ගැනීම.</td>
+                            <td>Making decisions.</td>
+                            <td>Choosing the best path for a team.</td>
+                            <td class="text-nowrap">🌟 Star</td>
+                        </tr>
+
+                        <tr class="category-square">
+                            <td>q06</td>
+                            <td>පිළිවෙළකට ඇති වැඩවලට ප්‍රිය කිරීම.</td>
+                            <td>Structured work.</td>
+                            <td>Following a fixed daily schedule.</td>
+                            <td class="text-nowrap">🟦 Square</td>
+                        </tr>
+                        <tr class="category-square">
+                            <td>q07</td>
+                            <td>සියුම් කරුණු කෙරෙහි අවධානය දීම.</td>
+                            <td>Detail-oriented.</td>
+                            <td>Checking a report for tiny errors.</td>
+                            <td class="text-nowrap">🟦 Square</td>
+                        </tr>
+                        <tr class="category-square">
+                            <td>q08</td>
+                            <td>නීති සහ රීති අනුගමනය කිරීම.</td>
+                            <td>Following rules.</td>
+                            <td>Respecting company protocols.</td>
+                            <td class="text-nowrap">🟦 Square</td>
+                        </tr>
+                        <tr class="category-square">
+                            <td>q09</td>
+                            <td>පැහැදිලි උපදෙස් මත වැඩ කිරීම.</td>
+                            <td>Clear instructions.</td>
+                            <td>Completing a task based on a guide.</td>
+                            <td class="text-nowrap">🟦 Square</td>
+                        </tr>
+                        <tr class="category-square">
+                            <td>q10</td>
+                            <td>වාර්තා හෝ ලේඛන නඩත්තු කිරීම.</td>
+                            <td>Maintaining records.</td>
+                            <td>Filing documents systematically.</td>
+                            <td class="text-nowrap">🟦 Square</td>
+                        </tr>
+
+                        <tr class="category-diamond">
+                            <td>q11</td>
+                            <td>තර්කානුකූල ගැටලු විසඳීම.</td>
+                            <td>Logical problems.</td>
+                            <td>Solving math or logic puzzles.</td>
+                            <td class="text-nowrap">🔷 Diamond</td>
+                        </tr>
+                        <tr class="category-diamond">
+                            <td>q12</td>
+                            <td>පද්ධති විශ්ලේෂණය කිරීම.</td>
+                            <td>Analyzing systems.</td>
+                            <td>Finding flaws in a process.</td>
+                            <td class="text-nowrap">🔷 Diamond</td>
+                        </tr>
+                        <tr class="category-diamond">
+                            <td>q13</td>
+                            <td>තාක්ෂණික අභියෝගවලට ප්‍රිය කිරීම.</td>
+                            <td>Technical challenges.</td>
+                            <td>Debugging a computer program.</td>
+                            <td class="text-nowrap">🔷 Diamond</td>
+                        </tr>
+                        <tr class="category-diamond">
+                            <td>q14</td>
+                            <td>ගැටලුවලට විසඳුම් නිර්මාණය කිරීම.</td>
+                            <td>Designing solutions.</td>
+                            <td>Planning a more efficient workflow.</td>
+                            <td class="text-nowrap">🔷 Diamond</td>
+                        </tr>
+                        <tr class="category-diamond">
+                            <td>q15</td>
+                            <td>නව තාක්ෂණයන් ඉගෙනීම.</td>
+                            <td>New technologies.</td>
+                            <td>Learning how to use AI tools.</td>
+                            <td class="text-nowrap">🔷 Diamond</td>
+                        </tr>
+
+                        <tr class="category-circle">
+                            <td>q16</td>
+                            <td>මිනිසුන්ට ගැටලු විසඳා ගැනීමට උදව් කිරීම.</td>
+                            <td>Helping people.</td>
+                            <td>Giving advice to a friend in need.</td>
+                            <td class="text-nowrap">🟢 Circle</td>
+                        </tr>
+                        <tr class="category-circle">
+                            <td>q17</td>
+                            <td>අන් අයට ඉගැන්වීම.</td>
+                            <td>Teaching others.</td>
+                            <td>Explaining a lesson to a classmate.</td>
+                            <td class="text-nowrap">🟢 Circle</td>
+                        </tr>
+                        <tr class="category-circle">
+                            <td>q18</td>
+                            <td>කණ්ඩායම් හැඟීම.</td>
+                            <td>Team spirit.</td>
+                            <td>Enjoying working with others.</td>
+                            <td class="text-nowrap">🟢 Circle</td>
+                        </tr>
+                        <tr class="category-circle">
+                            <td>q19</td>
+                            <td>සැලකිලිමත් වීම සහ බෙදාහදා ගැනීම.</td>
+                            <td>Caring/Sharing.</td>
+                            <td>Caring for colleagues' well-being.</td>
+                            <td class="text-nowrap">🟢 Circle</td>
+                        </tr>
+                        <tr class="category-circle">
+                            <td>q20</td>
+                            <td>අන් අයගේ හැඟීම් තේරුම් ගැනීම.</td>
+                            <td>Understanding feelings.</td>
+                            <td>Being empathetic to others' pain.</td>
+                            <td class="text-nowrap">🟢 Circle</td>
+                        </tr>
+
+                        <tr class="category-triangle">
+                            <td>q21</td>
+                            <td>නිර්මාණාත්මක වැඩවලට ප්‍රිය කිරීම.</td>
+                            <td>Creative activities.</td>
+                            <td>Painting, writing, or designing.</td>
+                            <td class="text-nowrap">🔺 Triangle</td>
+                        </tr>
+                        <tr class="category-triangle">
+                            <td>q22</td>
+                            <td>අදහස් කලාත්මකව ඉදිරිපත් කිරීම.</td>
+                            <td>Expressing ideas.</td>
+                            <td>Using art to convey a message.</td>
+                            <td class="text-nowrap">🔺 Triangle</td>
+                        </tr>
+                        <tr class="category-triangle">
+                            <td>q23</td>
+                            <td>නව අදහස් උත්පාදනය කිරීම.</td>
+                            <td>Brainstorming.</td>
+                            <td>Coming up with "out of the box" ideas.</td>
+                            <td class="text-nowrap">🔺 Triangle</td>
+                        </tr>
+                        <tr class="category-triangle">
+                            <td>q24</td>
+                            <td>ඉදිරිපත් කිරීම් නිර්මාණාත්මකව කිරීම.</td>
+                            <td>Creative presentations.</td>
+                            <td>Making visually stunning slides.</td>
+                            <td class="text-nowrap">🔺 Triangle</td>
+                        </tr>
+                        <tr class="category-triangle">
+                            <td>q25</td>
+                            <td>දෘශ්‍ය නිර්මාණ සමඟ වැඩ කිරීම.</td>
+                            <td>Visual designs.</td>
+                            <td>Designing logos or layouts.</td>
+                            <td class="text-nowrap">🔺 Triangle</td>
+                        </tr>
+
+                        <tr class="category-rectangle">
+                            <td>q26</td>
+                            <td>ප්‍රායෝගික වැඩවලට ප්‍රිය කිරීම.</td>
+                            <td>Hands-on work.</td>
+                            <td>Preferring physical activity to desk work.</td>
+                            <td class="text-nowrap">▭ Rectangle</td>
+                        </tr>
+                        <tr class="category-rectangle">
+                            <td>q27</td>
+                            <td>දේවල් අලුත්වැඩියා කිරීම.</td>
+                            <td>Fixing/Repairing.</td>
+                            <td>Fixing a broken appliance or car.</td>
+                            <td class="text-nowrap">▭ Rectangle</td>
+                        </tr>
+                        <tr class="category-rectangle">
+                            <td>q28</td>
+                            <td>දේවල් සෑදීම හෝ එකලස් කිරීම.</td>
+                            <td>Building/Assembling.</td>
+                            <td>Putting together furniture or machinery.</td>
+                            <td class="text-nowrap">▭ Rectangle</td>
+                        </tr>
+                        <tr class="category-rectangle">
+                            <td>q29</td>
+                            <td>මෙවලම් භාවිතයෙන් වැඩ කිරීම.</td>
+                            <td>Using tools.</td>
+                            <td>Using hammers, drills, or machinery.</td>
+                            <td class="text-nowrap">▭ Rectangle</td>
+                        </tr>
+                        <tr class="category-rectangle">
+                            <td>q30</td>
+                            <td>සැබෑ ලෝකයේ ගැටලු විසඳීම.</td>
+                            <td>Real-world problems.</td>
+                            <td>Fixing a leak or a technical fault.</td>
+                            <td class="text-nowrap">▭ Rectangle</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid mt-4 mb-5 no-print">
+        <div class="row">
+            <div class="col-12">
+                <a href="test.html" class="btn btn-secondary btn-lg w-100 w-md-auto">
+                    &larr; Back to Questions
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="bootstrap5/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
