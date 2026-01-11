@@ -57,8 +57,10 @@
             const result = await signInWithPopup(auth, provider);
             const email = result.user.email;
 
+            console.log("Logged in email:", email);
+
             if (!ALLOWED_ADMINS.includes(email)) {
-                alert("Access denied");
+                alert("Access denied: " + email);
                 return;
             }
 
