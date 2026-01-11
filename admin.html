@@ -33,6 +33,18 @@
         import { getFirestore, collection, getDocs }
             from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
+        import { signInWithRedirect, getRedirectResult } from "firebase/auth";
+
+        // Start login
+        signInWithRedirect(auth, provider);
+
+        // Handle result after redirect
+        getRedirectResult(auth).then(result => {
+            if (result.user) {
+                loadData();
+            }
+        });
+
         /* ---------- CONFIG ---------- */
         const firebaseConfig = {
             apiKey: "AIzaSyDrCQUE307cCB-RrmuA6ei7cnyW1NUv2f0",
