@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel</title>
+</head>
+
+<body>
+
+    <button onclick="login()">Login with Google</button>
+
+    <table border="1" style="margin-top:20px; display:none" id="dataTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>WhatsApp</th>
+                <th>Submitted At</th>
+            </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+    </table>
+
+    <button onclick="exportCSV()" style="display:none" id="exportBtn">
+        Export to Sheets
+    </button>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged }
+            from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+        import { getFirestore, collection, getDocs }
+            from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+        /* ---------- CONFIG ---------- */
+        const firebaseConfig = {
+            apiKey: "AIzaSyDrCQUE307cCB-RrmuA6ei7cnyW1NUv2f0",
+            authDomain: "skills-test-b33c4.firebaseapp.com",
+            projectId: "skills-test-b33c4",
+            storageBucket: "skills-test-b33c4.firebasestorage.app",
+            messagingSenderId: "132278071102",
+            appId: "1:132278071102:web:bdb2f8949c5c6f8932c66f"
+        };
+
+        const ALLOWED_ADMINS = [
+            "admin@gmail.com"
+        ];
+
+        /* ---------- INIT ---------- */
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const provider = new GoogleAuthProvider();
+
+        /* ---------- AUTH STATE ---------- */
+        onAuthStateChanged(auth, user => {
+            if (user && ALLOWED_ADMINS.includes(user.email)) {
+                loadData();
+            }
+        });
+
+        /* ---------- LOGIN ---------- */
+        window.login = async () => {
+            const result = await signInWithPopup(auth, provider);
+            const email = result.user.email;
+
+            if (!ALLOWED_ADMINS.includes(email)) {
+                alert("Access denied");
+                auth.signOut();
+                return;
+            }
+
+            loadData();
+        };
+
+        /* ---------- LOAD DATA ---------- */
+        async function loadData() {
+            const snapshot = await getDocs(collection(db, "quiz_users"));
+            const tbody = document.getElementById("tbody");
+
+            tbody.innerHTML = "";
+
+            snapshot.forEach(doc => {
+                const d = doc.data();
+                tbody.innerHTML += `
+      <tr>
+        <td>${d.name}</td>
+        <td>+94${d.whatsapp}</td>
+        <td>${d.createdAt?.toDate().toLocaleString() || "-"}</td>
+      </tr>
+    `;
+            });
+
+            document.getElementById("dataTable").style.display = "table";
+            document.getElementById("exportBtn").style.display = "inline-block";
+        }
+
+        /* ---------- EXPORT CSV ---------- */
+        window.exportCSV = () => {
+            let csv = "Name,WhatsApp,Submitted At\n";
+
+            document.querySelectorAll("#tbody tr").forEach(row => {
+                const cols = row.querySelectorAll("td");
+                csv += `"${cols[0].innerText}","${cols[1].innerText}","${cols[2].innerText}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: "text/csv" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "quiz_users.csv";
+            link.click();
+        };
+    </script>
+
+</body>
+
+</html>
