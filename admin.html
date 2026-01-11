@@ -55,8 +55,9 @@
 
         /* ---------- AUTH STATE ---------- */
         onAuthStateChanged(auth, user => {
-            if (user && ALLOWED_ADMINS.includes(user.email)) {
-                loadData();
+            if (user) {
+                // Try to read data, Firestore rules will block non-admins
+                loadData().catch(() => alert("Access denied"));
             }
         });
 
