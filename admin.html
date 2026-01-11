@@ -4,27 +4,49 @@
 <head>
     <meta charset="UTF-8" />
     <title>Admin Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="bootstrap5/css/bootstrap.min.css">
+
+    <!-- Bootstrap JS -->
+    <script src="bootstrap5/js/bootstrap.bundle.min.js"></script>
 </head>
 
-<body>
+<body class="bg-light">
 
-    <button onclick="login()">Login with Google</button>
+    <div class="container py-4">
 
-    <table border="1" style="margin-top:20px; display:none" id="dataTable">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>WhatsApp</th>
-                <th>Submitted At</th>
-            </tr>
-        </thead>
-        <tbody id="tbody"></tbody>
-    </table>
+        <h3 class="mb-4">Admin Panel – Quiz Submissions</h3>
 
-    <button onclick="exportCSV()" style="display:none" id="exportBtn">
-        Export to Sheets
-    </button>
+        <!-- LOGIN BUTTON -->
+        <button id="loginBtn" class="btn btn-primary mb-3" onclick="login()">
+            Login with Google
+        </button>
 
+        <!-- TABLE -->
+        <div class="table-responsive" id="tableWrapper" style="display:none;">
+            <table class="table table-bordered table-striped table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>WhatsApp</th>
+                        <th>Submitted At</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody"></tbody>
+            </table>
+        </div>
+
+        <!-- EXPORT BUTTON -->
+        <button onclick="exportCSV()" class="btn btn-success mt-3" style="display:none" id="exportBtn">
+            Export to CSV
+        </button>
+
+    </div>
+
+    <!-- FIREBASE LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider }
@@ -32,7 +54,7 @@
         import { getFirestore, collection, getDocs, doc, getDoc }
             from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
-        /* ---------- CONFIG ---------- */
+        /* ---------- FIREBASE CONFIG ---------- */
         const firebaseConfig = {
             apiKey: "AIzaSyDrCQUE307cCB-RrmuA6ei7cnyW1NUv2f0",
             authDomain: "skills-test-b33c4.firebaseapp.com",
@@ -50,21 +72,30 @@
 
         /* ---------- LOGIN ---------- */
         window.login = async () => {
-            const result = await signInWithPopup(auth, provider);
-            const email = result.user.email;
+            try {
+                const result = await signInWithPopup(auth, provider);
+                const email = result.user.email;
 
-            console.log("Logged in:", email);
+                console.log("Logged in:", email);
 
-            // 🔐 Check admin in Firestore
-            const adminRef = doc(db, "admins", email);
-            const adminSnap = await getDoc(adminRef);
+                // 🔐 Check admin in Firestore (admins/{email})
+                const adminRef = doc(db, "admins", email);
+                const adminSnap = await getDoc(adminRef);
 
-            if (!adminSnap.exists()) {
-                alert("Access denied");
-                return;
+                if (!adminSnap.exists()) {
+                    alert("Access denied");
+                    return;
+                }
+
+                // UI updates
+                document.getElementById("loginBtn").disabled = true;
+                document.getElementById("loginBtn").innerText = "Logged in";
+
+                loadData();
+            } catch (err) {
+                console.error(err);
+                alert("Login failed");
             }
-
-            loadData();
         };
 
         /* ---------- LOAD DATA ---------- */
@@ -73,19 +104,22 @@
             const tbody = document.getElementById("tbody");
 
             tbody.innerHTML = "";
+            let index = 1;
 
             snapshot.forEach(doc => {
                 const d = doc.data();
+
                 tbody.innerHTML += `
-        <tr>
-          <td>${d.name}</td>
-          <td>+94${d.whatsapp}</td>
-          <td>${d.createdAt?.toDate().toLocaleString() || "-"}</td>
-        </tr>
-      `;
+                    <tr>
+                        <td>${index++}</td>
+                        <td>${d.name || "-"}</td>
+                        <td>+94${d.whatsapp || "-"}</td>
+                        <td>${d.createdAt?.toDate().toLocaleString() || "-"}</td>
+                    </tr>
+                `;
             });
 
-            document.getElementById("dataTable").style.display = "table";
+            document.getElementById("tableWrapper").style.display = "block";
             document.getElementById("exportBtn").style.display = "inline-block";
         }
 
@@ -95,7 +129,7 @@
 
             document.querySelectorAll("#tbody tr").forEach(row => {
                 const cols = row.querySelectorAll("td");
-                csv += `"${cols[0].innerText}","${cols[1].innerText}","${cols[2].innerText}"\n`;
+                csv += `"${cols[1].innerText}","${cols[2].innerText}","${cols[3].innerText}"\n`;
             });
 
             const blob = new Blob([csv], { type: "text/csv" });
