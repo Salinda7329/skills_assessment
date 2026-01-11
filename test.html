@@ -728,6 +728,7 @@
         if (name === "") {
             alert("Please enter your name before downloading the report.");
             document.getElementById("userName").focus();
+            downloadBtn.disabled = false;
             return;
         }
 
