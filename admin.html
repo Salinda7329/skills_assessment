@@ -3,7 +3,6 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Panel</title>
 </head>
 
@@ -28,22 +27,10 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged }
+        import { getAuth, signInWithPopup, GoogleAuthProvider }
             from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
         import { getFirestore, collection, getDocs }
             from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
-
-        import { signInWithRedirect, getRedirectResult } from "firebase/auth";
-
-        // Start login
-        signInWithRedirect(auth, provider);
-
-        // Handle result after redirect
-        getRedirectResult(auth).then(result => {
-            if (result.user) {
-                loadData();
-            }
-        });
 
         /* ---------- CONFIG ---------- */
         const firebaseConfig = {
@@ -56,7 +43,7 @@
         };
 
         const ALLOWED_ADMINS = [
-            "admin@gmail.com"
+            "your-real-email@gmail.com"
         ];
 
         /* ---------- INIT ---------- */
@@ -65,14 +52,6 @@
         const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
 
-        /* ---------- AUTH STATE ---------- */
-        onAuthStateChanged(auth, user => {
-            if (user) {
-                // Try to read data, Firestore rules will block non-admins
-                loadData().catch(() => alert("Access denied"));
-            }
-        });
-
         /* ---------- LOGIN ---------- */
         window.login = async () => {
             const result = await signInWithPopup(auth, provider);
@@ -80,7 +59,6 @@
 
             if (!ALLOWED_ADMINS.includes(email)) {
                 alert("Access denied");
-                auth.signOut();
                 return;
             }
 
@@ -97,12 +75,12 @@
             snapshot.forEach(doc => {
                 const d = doc.data();
                 tbody.innerHTML += `
-      <tr>
-        <td>${d.name}</td>
-        <td>+94${d.whatsapp}</td>
-        <td>${d.createdAt?.toDate().toLocaleString() || "-"}</td>
-      </tr>
-    `;
+        <tr>
+          <td>${d.name}</td>
+          <td>+94${d.whatsapp}</td>
+          <td>${d.createdAt?.toDate().toLocaleString() || "-"}</td>
+        </tr>
+      `;
             });
 
             document.getElementById("dataTable").style.display = "table";
