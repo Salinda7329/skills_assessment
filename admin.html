@@ -29,7 +29,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider }
             from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
-        import { getFirestore, collection, getDocs }
+        import { getFirestore, collection, getDocs, doc, getDoc }
             from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
         /* ---------- CONFIG ---------- */
@@ -42,10 +42,6 @@
             appId: "1:132278071102:web:bdb2f8949c5c6f8932c66f"
         };
 
-        const ALLOWED_ADMINS = [
-            "your-real-email@gmail.com"
-        ];
-
         /* ---------- INIT ---------- */
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -57,10 +53,14 @@
             const result = await signInWithPopup(auth, provider);
             const email = result.user.email;
 
-            console.log("Logged in email:", email);
+            console.log("Logged in:", email);
 
-            if (!ALLOWED_ADMINS.includes(email)) {
-                alert("Access denied: " + email);
+            // 🔐 Check admin in Firestore
+            const adminRef = doc(db, "admins", email);
+            const adminSnap = await getDoc(adminRef);
+
+            if (!adminSnap.exists()) {
+                alert("Access denied");
                 return;
             }
 
