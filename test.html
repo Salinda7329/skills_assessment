@@ -833,13 +833,13 @@
             // Replace spaces in name with underscores
             const formattedName = name.trim().replace(/\s+/g, "_");
 
-            const waLink = `https://wa.me/+94${waNumber}?text=My_Skills_Assessment_Report-${formattedName}`;
+            const waLink = `https://wa.me/+94772009600?text=My_Skills_Assessment_Report-${formattedName}`;
 
             // Instruction text (bold, bigger, red)
             pdf.setFont("helvetica", "bold");
             pdf.setFontSize(12);
             pdf.setTextColor(255, 0, 0); // red
-            pdf.text("Click the link below to know more about your report:", 20, pageHeight - 20);
+            pdf.text("Click the link below to know more about your report:", 20, pageHeight - 100);
 
             // WhatsApp link (blue)
             pdf.setFont("helvetica", "normal");
@@ -848,7 +848,7 @@
             pdf.textWithLink(
                 waLink,
                 20,
-                pageHeight - 10,
+                pageHeight - 90,
                 { url: waLink }
             );
 
@@ -862,7 +862,7 @@
         pdf.text(
             "Generated via Skills Assessment System",
             pageWidth / 2,
-            pageHeight - 5,
+            pageHeight - 15,
             { align: "center" }
         );
 
