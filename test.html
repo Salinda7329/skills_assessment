@@ -142,7 +142,7 @@
             border: 2px solid #470C8A;
             border-radius: 12px;
             padding: 10px;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -369,7 +369,7 @@
             }
 
             .question-card input[type="checkbox"] {
-                transform: scale(2);
+                /* transform: scale(2); */
                 align-self: flex-end;
             }
 
@@ -598,6 +598,16 @@
     const analytics = getAnalytics(app);
     const db = getFirestore(app);
 
+    function calculatePercentages(results) {
+        const percentages = {};
+
+        Object.keys(results).forEach(category => {
+            percentages[category] = Math.round((results[category] / 5) * 100);
+        });
+
+        return percentages;
+    }
+
     window.saveUserData = async function (name, whatsapp, results) {
 
         const percentages = calculatePercentages(results);
@@ -689,7 +699,7 @@
         resultContainer.innerHTML = "";
 
         Object.keys(results).forEach(s => {
-            const p = Math.round((results[s] / 6) * 100);
+            const p = Math.round((results[s] / 5) * 100);
 
             const c = document.createElement("div");
             c.className = "cell";
@@ -900,46 +910,43 @@
     /* ---------- QUESTIONS DATA ---------- */
     const questions = [
         // STAR – Leadership & Influence
-        { id: "q01", text: "Q01-Being a group leader (e.g., captain of a team or head of a project).", shape: "Star" },
-        { id: "q02", text: "Q02-Public speaking (e.g., giving a speech at a party or wedding).", shape: "Star" },
-        { id: "q03", text: "Q03-Taking risks (e.g., starting your own business instead of a safe job).", shape: "Star" },
-        { id: "q04", text: "Q04-Motivating others (e.g., cheering up friends when a task gets hard).", shape: "Star" },
-        { id: "q05", text: "Q05-Making team decisions (e.g., being the one to pick where the group eats).", shape: "Star" },
+        { id: "q01", text: "Q01-Captain/ Leader of a team.", shape: "Star" },
+        { id: "q02", text: "Q02-Giving a speech at a party or a wedding.", shape: "Star" },
+        { id: "q03", text: "Q03-Starting your own business instead of a job.", shape: "Star" },
+        { id: "q04", text: "Q04-Motivating others (Cheering during a match).", shape: "Star" },
+        { id: "q05", text: "Q05-Being the one to pick where the friends eat.", shape: "Star" },
 
         // SQUARE – Structure & Organization
-        { id: "q06", text: "Q06-Working to a timetable (e.g., planning your day hour-by-hour).", shape: "Square" },
-        { id: "q07", text: "Q07-Paying attention to details (e.g., noticing a small mistake in a book).", shape: "Square" },
-        { id: "q08", text: "Q08-Following rules (e.g., strictly following the speed limit or office rules).", shape: "Square" },
-        { id: "q09", text: "Q09-Using clear instructions (e.g., following an user manual step-by-step).", shape: "Square" },
-        { id: "q10", text: "Q10-Maintaining records (e.g., keeping files or photos in seperate folders).", shape: "Square" },
-
+        { id: "q06", text: "Q06-Working to a timetable (Planning your day hour-by-hour).", shape: "Square" },
+        { id: "q07", text: "Q07-Noticing a small mistake in a book.", shape: "Square" },
+        { id: "q08", text: "Q08-Strictly following the road speed limit or school rules.", shape: "Square" },
+        { id: "q09", text: "Q09-Following an user manual step-by-step.", shape: "Square" },
+        { id: "q10", text: "Q10-Keeping files or photos in seperate folders.", shape: "Square" },
         // DIAMOND – Logic & Technology
-        { id: "q11", text: "Q11-Solving logical problems (e.g., enjoying Chess or strategy games).", shape: "Diamond" },
-        { id: "q12", text: "Q12-Analyzing systems (e.g., figuring out why a computer app is crashing).", shape: "Diamond" },
-        { id: "q13", text: "Q13-Technical challenges (e.g., setting up a new Wi-Fi router for friends).", shape: "Diamond" },
-        { id: "q14", text: "Q14-Using data (e.g., making decisions based on facts rather than gut feelings).", shape: "Diamond" },
-        { id: "q15", text: "Q15-Learning new tech (e.g., reading about the latest AI or gadgets).", shape: "Diamond" },
-
+        { id: "q11", text: "Q11-Enjoying Chess or strategy games.", shape: "Diamond" },
+        { id: "q12", text: "Q12-Figuring out why a computer app is not working.", shape: "Diamond" },
+        { id: "q13", text: "Q13-Setting up a new Star-link router for a friend.", shape: "Diamond" },
+        { id: "q14", text: "Q14-Making decisions based on facts rather than gut feelings.", shape: "Diamond" },
+        { id: "q15", text: "Q15-Reading about the latest AI or gadgets.", shape: "Diamond" },
         // CIRCLE – Helping & People Skills
-        { id: "q16", text: "Q16-Helping people (e.g., spending your weekend helping a friend).", shape: "Circle" },
-        { id: "q17", text: "Q17-Teaching others (e.g., explaining a difficult concept to a sibling).", shape: "Circle" },
-        { id: "q18", text: "Q18-Team spirit (e.g., caring more about getting together than winning).", shape: "Circle" },
-        { id: "q19", text: "Q19-Emotional support (e.g., being the 'shoulder to cry on' for friends).", shape: "Circle" },
-        { id: "q20", text: "Q20-Empathy (e.g., knowing someone is sad just by looking at their face).", shape: "Circle" },
+        { id: "q16", text: "Q16-Helping people (Spending your weekend helping a friend).", shape: "Circle" },
+        { id: "q17", text: "Q17-Teaching others (Explaining a difficult lesson to a friend).", shape: "Circle" },
+        { id: "q18", text: "Q18-Team spirit.", shape: "Circle" },
+        { id: "q19", text: "Q19-Being the 'shoulder to cry on' for friends.", shape: "Circle" },
+        { id: "q20", text: "Q20-Knowing someone is sad just by looking at the person's face.", shape: "Circle" },
 
         // TRIANGLE – Creativity & Expression
-        { id: "q21", text: "Q21-Brainstorming (e.g., coming up with 10 'wild' ideas for a party theme).", shape: "Triangle" },
-        { id: "q22", text: "Q22-Artistic expression (e.g., expressing ideas through drawing or music).", shape: "Triangle" },
-        { id: "q23", text: "Q23-Visual thinking (e.g., seeing a story play out like a video in your head).", shape: "Triangle" },
-        { id: "q24", text: "Q24-Creative presentations (e.g., making a video instead of a written report).", shape: "Triangle" },
-        { id: "q25", text: "Q25-Visual design (e.g., caring about how your room or social media profile looks).", shape: "Triangle" },
-
+        { id: "q21", text: "Q21-Brainstorming (Coming up with 10 'wild' ideas for a party theme).", shape: "Triangle" },
+        { id: "q22", text: "Q22-Artistic expression (Expressing ideas through drawing or music).", shape: "Triangle" },
+        { id: "q23", text: "Q23-Visual thinking (Seeing a story plays like a video in your head).", shape: "Triangle" },
+        { id: "q24", text: "Q24-Creative presentations (Making a video instead of a hand written report).", shape: "Triangle" },
+        { id: "q25", text: "Q25-Visual design (Caring about your room or social media profile looks).", shape: "Triangle" },
         // RECTANGLE – Practical & Hands-on
-        { id: "q26", text: "Q26-Physical work (e.g., preferring to move around rather than sit at a desk).", shape: "Rectangle" },
-        { id: "q27", text: "Q27-Fixing things (e.g., repairing a leaky tap or a broken chair).", shape: "Rectangle" },
-        { id: "q28", text: "Q28-Building objects (e.g., assemble furniture).", shape: "Rectangle" },
-        { id: "q29", text: "Q29-Using tools (e.g., feeling confident using a drill, hammer, or a saw).", shape: "Rectangle" },
-        { id: "q30", text: "Q30-Tangible results (e.g., feeling proud of a clean home or a clean car).", shape: "Rectangle" }
+        { id: "q26", text: "Q26-Physical work (Preferring to move around rather than sit at a desk).", shape: "Rectangle" },
+        { id: "q27", text: "Q27-Fixing things (Repairing a tap or a broken chair).", shape: "Rectangle" },
+        { id: "q28", text: "Q28-Building objects (Assembling furniture).", shape: "Rectangle" },
+        { id: "q29", text: "Q29-Using tools (Feeling confident using a drill, hammer, or a saw).", shape: "Rectangle" },
+        { id: "q30", text: "Q30-Keeping home clean or car clean.", shape: "Rectangle" }
     ];
     /* ---------- JOB DATA ---------- */
     const categoriesData = {
