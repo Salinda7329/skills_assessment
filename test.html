@@ -190,7 +190,7 @@
         #jobsSection {
             max-width: 800px;
             margin: 20px auto;
-            padding: 15px;
+            padding: 5px;
             background: #fff;
             border: 2px solid #470C8A;
             display: none;
@@ -199,7 +199,7 @@
 
         input[type="text"] {
             width: 100%;
-            padding: 8px;
+            padding: 5px;
             border-radius: 6px;
             border: 1px solid #ccc;
         }
@@ -484,34 +484,34 @@
             </div>
         </form>
 
-        <h4 id="resultHeader" class="text-center mt-3" style="display:none">
-            Click On The Boxes to View Your Personality Type
-        </h4>
+        <h6 id="resultHeader" class="text-center mt-3" style="display:none">
+            Your Results
+        </h6>
 
         <div id="resultContainer" class="results"></div>
 
         <div id="jobsSection" style="position: relative; display: none;">
-            <h5>Selected Jobs & Skills</h5>
+            <h5>Suggested Skills & Jobs</h5>
             <ul id="jobsList"></ul>
 
-            <h5 style="color: red;">Enter Details to Download Report</h5>
-            <label class="mt-3"><b>Your Name</b></label>
+            <h5 style="color: red;">Enter Details to Download <b>Full Report</b></h5>
+            <label><b>Your Name</b></label>
             <input type="text" id="userName" placeholder="Enter your name" required>
 
-            <label class="mt-3"><b>WhatsApp Number</b></label>
+            <label><b>WhatsApp Number</b></label>
             <input type="text" id="whatsAppNumber" placeholder="Ex: 771234567">
 
             <!-- <span class="arrow">⬇</span> -->
 
             <!-- Buttons Row -->
-            <div class="d-flex justify-content-center align-items-center gap-3 mt-4 position-relative">
+            <div class="d-flex justify-content-center align-items-center gap-3 position-relative">
                 <button class="btn btn-success glow-btn" onclick="downloadPDF()">
-                    Download PDF
+                    Click to Download Report
                 </button>
 
 
                 <button class="btn btn-danger" onclick="location.href='index.html'">
-                    Reset
+                    Start Again
                 </button>
             </div>
         </div>
@@ -556,7 +556,7 @@
                         Your personality profile has been calculated.
                     </p>
                     <ul>
-                        <li style="color: red;"><b>Click On Any Box</b> to view recommended careers and skills</li>
+                        <li style="color: red;"><b>Click On the Highest Score</b> to view recommended careers and skills</li>
                     </ul>
                 </div>
                 <div class="modal-footer">
