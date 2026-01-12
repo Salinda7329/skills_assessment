@@ -556,7 +556,8 @@
                         Your personality profile has been calculated.
                     </p>
                     <ul>
-                        <li style="color: red;"><b>Click On the Highest Score</b> to view recommended careers and skills</li>
+                        <li style="color: red;"><b>Click On the Highest Score</b> to view recommended careers and skills
+                        </li>
                     </ul>
                 </div>
                 <div class="modal-footer">
@@ -802,28 +803,46 @@
         let y = imgHeight + 15;
 
         pdf.setFontSize(14);
-        pdf.text("Career Assessment Report", 20, y);
+        pdf.text("Skills Assessment Report", 20, y);
         y += 10;
 
         pdf.setFontSize(11);
         pdf.text(`Name: ${name}`, 20, y);
         y += 12;
 
-        Object.keys(results).forEach(k => {
-            const percent = Math.round(results[k] / 5 * 100);
-            pdf.text(`${k}: ${percent}%`, 20, y);
+        Object.keys(results).forEach(category => {
+
+            const percentage = Math.round((results[category] / 5) * 100);
+
+            // Category title
+            pdf.setFont("helvetica", "bold");
+            pdf.setFontSize(12);
+            pdf.text(`${category} – ${percentage}%`, 20, y);
             y += 8;
+
+            // Jobs under this category
+            pdf.setFont("helvetica", "normal");
+            pdf.setFontSize(10);
+
+            categoriesData[category].forEach(job => {
+                const jobLine = `• ${job.job} (${job.skills.join(", ")})`;
+                pdf.text(jobLine, 25, y);
+                y += 6;
+
+                // Page break protection
+                if (y > pageHeight - 30) {
+                    pdf.addPage();
+                    y = 20;
+                }
+            });
+
+            y += 6; // spacing between categories
         });
+
 
         y += 5;
         pdf.setFontSize(12);
-        pdf.text("Selected Jobs:", 20, y);
         y += 10;
-
-        document.querySelectorAll("#jobsList li").forEach(li => {
-            pdf.text("- " + li.textContent, 25, y);
-            y += 8;
-        });
 
         /* ---------- FOOTER ---------- */
         pdf.setFontSize(9);
@@ -839,7 +858,7 @@
             pdf.setFont("helvetica", "bold");
             pdf.setFontSize(12);
             pdf.setTextColor(255, 0, 0); // red
-            pdf.text("Click the link below to know more about your report:", 20, pageHeight - 100);
+            pdf.text("Click the link below to know more about your report:", 20, pageHeight - 50);
 
             // WhatsApp link (blue)
             pdf.setFont("helvetica", "normal");
@@ -848,7 +867,7 @@
             pdf.textWithLink(
                 waLink,
                 20,
-                pageHeight - 90,
+                pageHeight - 45,
                 { url: waLink }
             );
 
@@ -874,41 +893,46 @@
     /* ---------- QUESTIONS DATA ---------- */
     const questions = [
         // STAR – Leadership & Influence
-        { id: "q01", text: "q01-Leading a group.", shape: "Star" },
-        { id: "q02", text: "q02-Public speaking", shape: "Star" },
-        { id: "q03", text: "q03-Taking risks to achieve goals.", shape: "Star" },
-        { id: "q04", text: "q04-Motivating people to perform better.", shape: "Star" },
-        { id: "q05", text: "q05-Making decisions for a team.", shape: "Star" },
+        { id: "q01", text: "Q01-Being a group leader (e.g., captain of a team or head of a project).", shape: "Star" },
+        { id: "q02", text: "Q02-Public speaking (e.g., giving a speech at a party or wedding).", shape: "Star" },
+        { id: "q03", text: "Q03-Taking risks (e.g., starting your own business instead of a safe job).", shape: "Star" },
+        { id: "q04", text: "Q04-Motivating others (e.g., cheering up friends when a task gets hard).", shape: "Star" },
+        { id: "q05", text: "Q05-Making team decisions (e.g., being the one to pick where the group eats).", shape: "Star" },
+
         // SQUARE – Structure & Organization
-        { id: "q06", text: "q06-Enjoying structured work.", shape: "Square" },
-        { id: "q07", text: "q07-Paying attention to details.", shape: "Square" },
-        { id: "q08", text: "q08-Following rules and procedures.", shape: "Square" },
-        { id: "q09", text: "q09-Working with clear instructions.", shape: "Square" },
-        { id: "q10", text: "q10-Maintaining records or documents.", shape: "Square" },
+        { id: "q06", text: "Q06-Working to a timetable (e.g., planning your day hour-by-hour).", shape: "Square" },
+        { id: "q07", text: "Q07-Paying attention to details (e.g., noticing a small mistake in a book).", shape: "Square" },
+        { id: "q08", text: "Q08-Following rules (e.g., strictly following the speed limit or office rules).", shape: "Square" },
+        { id: "q09", text: "Q09-Using clear instructions (e.g., following an user manual step-by-step).", shape: "Square" },
+        { id: "q10", text: "Q10-Maintaining records (e.g., keeping files or photos in seperate folders).", shape: "Square" },
+
         // DIAMOND – Logic & Technology
-        { id: "q11", text: "q11-Solving logical problems.", shape: "Diamond" },
-        { id: "q12", text: "q12-Analyzing systems or processes.", shape: "Diamond" },
-        { id: "q13", text: "q13-Enjoying technical challenges.", shape: "Diamond" },
-        { id: "q14", text: "q14-Designing solutions to real-world problems.", shape: "Diamond" },
-        { id: "q15", text: "q15-Learning new technologies.", shape: "Diamond" },
+        { id: "q11", text: "Q11-Solving logical problems (e.g., enjoying Chess or strategy games).", shape: "Diamond" },
+        { id: "q12", text: "Q12-Analyzing systems (e.g., figuring out why a computer app is crashing).", shape: "Diamond" },
+        { id: "q13", text: "Q13-Technical challenges (e.g., setting up a new Wi-Fi router for friends).", shape: "Diamond" },
+        { id: "q14", text: "Q14-Using data (e.g., making decisions based on facts rather than gut feelings).", shape: "Diamond" },
+        { id: "q15", text: "Q15-Learning new tech (e.g., reading about the latest AI or gadgets).", shape: "Diamond" },
+
         // CIRCLE – Helping & People Skills
-        { id: "q16", text: "q16-Helping people solve problems.", shape: "Circle" },
-        { id: "q17", text: "q17-Teaching others.", shape: "Circle" },
-        { id: "q18", text: "q18-Team spirit.", shape: "Circle" },
-        { id: "q19", text: "q19-Caring and Sharing.", shape: "Circle" },
-        { id: "q20", text: "q20-Understanding others' feelings.", shape: "Circle" },
+        { id: "q16", text: "Q16-Helping people (e.g., spending your weekend helping a friend).", shape: "Circle" },
+        { id: "q17", text: "Q17-Teaching others (e.g., explaining a difficult concept to a sibling).", shape: "Circle" },
+        { id: "q18", text: "Q18-Team spirit (e.g., caring more about getting together than winning).", shape: "Circle" },
+        { id: "q19", text: "Q19-Emotional support (e.g., being the 'shoulder to cry on' for friends).", shape: "Circle" },
+        { id: "q20", text: "Q20-Empathy (e.g., knowing someone is sad just by looking at their face).", shape: "Circle" },
+
         // TRIANGLE – Creativity & Expression
-        { id: "q21", text: "q21-Enjoying creative activities.", shape: "Triangle" },
-        { id: "q22", text: "q22-Expressing ideas artistically.", shape: "Triangle" },
-        { id: "q23", text: "q23-Brainstorming new ideas.", shape: "Triangle" },
-        { id: "q24", text: "q24-Do presentations creatively.", shape: "Triangle" },
-        { id: "q25", text: "q25-Working with visual designs.", shape: "Triangle" },
+        { id: "q21", text: "Q21-Brainstorming (e.g., coming up with 10 'wild' ideas for a party theme).", shape: "Triangle" },
+        { id: "q22", text: "Q22-Artistic expression (e.g., expressing ideas through drawing or music).", shape: "Triangle" },
+        { id: "q23", text: "Q23-Visual thinking (e.g., seeing a story play out like a video in your head).", shape: "Triangle" },
+        { id: "q24", text: "Q24-Creative presentations (e.g., making a video instead of a written report).", shape: "Triangle" },
+        { id: "q25", text: "Q25-Visual design (e.g., caring about how your room or social media profile looks).", shape: "Triangle" },
+
         // RECTANGLE – Practical & Hands-on
-        { id: "q26", text: "q26-Enjoying hands-on work.", shape: "Rectangle" },
-        { id: "q27", text: "q27-Fixing or repairing things.", shape: "Rectangle" },
-        { id: "q28", text: "q28-Building or assembling objects.", shape: "Rectangle" },
-        { id: "q29", text: "q29-Working with tools or equipment.", shape: "Rectangle" },
-        { id: "q30", text: "q30-Solving real-world problems.", shape: "Rectangle" }
+        { id: "q26", text: "Q26-Physical work (e.g., preferring to move around rather than sit at a desk).", shape: "Rectangle" },
+        { id: "q27", text: "Q27-Fixing things (e.g., repairing a leaky tap or a broken chair).", shape: "Rectangle" },
+        { id: "q28", text: "Q28-Building objects (e.g., assemble furniture).", shape: "Rectangle" },
+        { id: "q29", text: "Q29-Using tools (e.g., feeling confident using a drill, hammer, or a saw).", shape: "Rectangle" },
+        { id: "q30", text: "Q30-Tangible results (e.g., feeling proud of a clean home or a clean car).", shape: "Rectangle" }
     ];
     /* ---------- JOB DATA ---------- */
     const categoriesData = {
