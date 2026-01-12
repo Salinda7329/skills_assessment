@@ -598,14 +598,21 @@
     const analytics = getAnalytics(app);
     const db = getFirestore(app);
 
-    window.saveUserData = async function (name, whatsapp) {
+    window.saveUserData = async function (name, whatsapp, results) {
+
+        const percentages = calculatePercentages(results);
+
         return await addDoc(collection(db, "quiz_users"), {
             name,
             whatsapp,
             countryCode: "+94",
-            createdAt: serverTimestamp()
+
+            scores: percentages,
+
+            submittedAt: serverTimestamp()
         });
     };
+
 
 </script>
 
@@ -784,7 +791,7 @@
 
         // Save to Firebase FIRST
         try {
-            await saveUserData(name, waNumber);
+            await saveUserData(name, waNumber, results);
         } catch (e) {
             console.error("Firestore error:", e);
             downloadBtn.disabled = false;
