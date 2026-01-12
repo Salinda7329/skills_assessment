@@ -40,7 +40,7 @@
         </div>
 
         <!-- EXPORT BUTTON -->
-        <button onclick="exportCSV()" class="btn btn-success mt-3" style="display:none" id="exportBtn">
+        <button id="exportBtn" onclick="exportCSV()" class="btn btn-success mt-3" style="display:none;">
             Export to CSV
         </button>
 
@@ -51,8 +51,15 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider }
             from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
-        import { getFirestore, collection, getDocs, doc, getDoc }
-            from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+        import {
+            getFirestore,
+            collection,
+            getDocs,
+            doc,
+            getDoc,
+            query,
+            orderBy
+        } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
         /* ---------- FIREBASE CONFIG ---------- */
         const firebaseConfig = {
@@ -76,9 +83,7 @@
                 const result = await signInWithPopup(auth, provider);
                 const email = result.user.email;
 
-                console.log("Logged in:", email);
-
-                // 🔐 Check admin in Firestore (admins/{email})
+                // Check admin access
                 const adminRef = doc(db, "admins", email);
                 const adminSnap = await getDoc(adminRef);
 
@@ -87,7 +92,6 @@
                     return;
                 }
 
-                // UI updates
                 document.getElementById("loginBtn").disabled = true;
                 document.getElementById("loginBtn").innerText = "Logged in";
 
@@ -98,16 +102,21 @@
             }
         };
 
-        /* ---------- LOAD DATA ---------- */
+        /* ---------- LOAD DATA (NEWEST FIRST) ---------- */
         async function loadData() {
-            const snapshot = await getDocs(collection(db, "quiz_users"));
             const tbody = document.getElementById("tbody");
-
             tbody.innerHTML = "";
+
+            const q = query(
+                collection(db, "quiz_users"),
+                orderBy("createdAt", "desc")
+            );
+
+            const snapshot = await getDocs(q);
             let index = 1;
 
-            snapshot.forEach(doc => {
-                const d = doc.data();
+            snapshot.forEach(docSnap => {
+                const d = docSnap.data();
 
                 tbody.innerHTML += `
                     <tr>
