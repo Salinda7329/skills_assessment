@@ -525,7 +525,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" style="color: red;" id="instructionsModalLabel"><b>Instructions</b></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <p>Please answer the questions honestly. Your results will suggest your personality type
@@ -549,19 +548,18 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="resultModalLabel" style="color: red;">Your Results Are Ready</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <p>
                         Your personality profile has been calculated.
                     </p>
                     <ul>
-                        <li style="color: red;"><b>Click On the Highest Score</b> to view recommended careers and skills
+                        <li style="color: red;"><b>Fill the Form</b> to Download the PDF Report
                         </li>
                     </ul>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                    <button id="viewResultsBtn" type="button" class="btn btn-primary" data-bs-dismiss="modal">
                         View Results
                     </button>
                 </div>
@@ -726,6 +724,13 @@
         );
         resultModal.show();
     }
+
+    document.getElementById("viewResultsBtn").addEventListener("click", () => {
+        const jobsSection = document.getElementById("jobsSection");
+
+        jobsSection.style.display = "block";
+        jobsSection.scrollIntoView({ behavior: "smooth" });
+    });
 
 
     function showJobs(shape) {
@@ -896,7 +901,7 @@
         pdf.setFontSize(9);
         pdf.setFont("helvetica", "normal");
         pdf.text(
-            "Generated via Skills Assessment System",
+            "Generated via Skills Test - " + "https://salinda7329.github.io/skills_assessment/test.html",
             pageWidth / 2,
             pageHeight - 15,
             { align: "center" }
