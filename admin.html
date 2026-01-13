@@ -33,6 +33,12 @@
                         <th>Name</th>
                         <th>WhatsApp</th>
                         <th>Submitted At</th>
+                        <th>Circle</th>
+                        <th>Diamond</th>
+                        <th>Rectangle</th>
+                        <th>Square</th>
+                        <th>Star</th>
+                        <th>Triangle</th>
                     </tr>
                 </thead>
                 <tbody id="tbody"></tbody>
@@ -109,7 +115,7 @@
 
             const q = query(
                 collection(db, "quiz_users"),
-                orderBy("createdAt", "desc")
+                orderBy("submittedAt", "desc")
             );
 
             const snapshot = await getDocs(q);
@@ -117,15 +123,23 @@
 
             snapshot.forEach(docSnap => {
                 const d = docSnap.data();
+                const scores = d.scores || {};
 
                 tbody.innerHTML += `
-                    <tr>
-                        <td>${index++}</td>
-                        <td>${d.name || "-"}</td>
-                        <td>+94${d.whatsapp || "-"}</td>
-                        <td>${d.createdAt?.toDate().toLocaleString() || "-"}</td>
-                    </tr>
-                `;
+            <tr>
+                <td>${index++}</td>
+                <td>${d.name || "-"}</td>
+                <td>${d.countryCode || ""}${d.whatsapp || "-"}</td>
+                <td>${d.submittedAt?.toDate().toLocaleString() || "-"}</td>
+
+                <td>${scores.Circle ?? 0}</td>
+                <td>${scores.Diamond ?? 0}</td>
+                <td>${scores.Rectangle ?? 0}</td>
+                <td>${scores.Square ?? 0}</td>
+                <td>${scores.Star ?? 0}</td>
+                <td>${scores.Triangle ?? 0}</td>
+            </tr>
+        `;
             });
 
             document.getElementById("tableWrapper").style.display = "block";
@@ -134,17 +148,27 @@
 
         /* ---------- EXPORT CSV ---------- */
         window.exportCSV = () => {
-            let csv = "Name,WhatsApp,Submitted At\n";
+            let csv = "Name,WhatsApp,Submitted At,Circle,Diamond,Rectangle,Square,Star,Triangle\n";
 
             document.querySelectorAll("#tbody tr").forEach(row => {
                 const cols = row.querySelectorAll("td");
-                csv += `"${cols[1].innerText}","${cols[2].innerText}","${cols[3].innerText}"\n`;
+
+                csv += `"${cols[1].innerText}",
+                "${cols[2].innerText}",
+                "${cols[3].innerText}",
+                "${cols[4].innerText}",
+                "${cols[5].innerText}",
+                "${cols[6].innerText}",
+                "${cols[7].innerText}",
+                "${cols[8].innerText}",
+                "${cols[9].innerText}"
+        \n`;
             });
 
-            const blob = new Blob([csv], { type: "text/csv" });
+            const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
-            link.download = "quiz_users.csv";
+            link.download = "quiz_users_with_scores.csv";
             link.click();
         };
     </script>
