@@ -123,7 +123,16 @@
 
             snapshot.forEach(docSnap => {
                 const d = docSnap.data();
-                const scores = d.scores || {};
+                const rawScores = d.scores || {};
+
+                const scores = {
+                    Circle: rawScores.Circle ?? rawScores.circle ?? 0,
+                    Diamond: rawScores.Diamond ?? rawScores.diamond ?? 0,
+                    Rectangle: rawScores.Rectangle ?? rawScores.rectangle ?? 0,
+                    Square: rawScores.Square ?? rawScores.square ?? 0,
+                    Star: rawScores.Star ?? rawScores.star ?? 0,
+                    Triangle: rawScores.Triangle ?? rawScores.triangle ?? 0
+                };
 
                 tbody.innerHTML += `
             <tr>
@@ -132,12 +141,12 @@
                 <td>${d.countryCode || ""}${d.whatsapp || "-"}</td>
                 <td>${d.submittedAt?.toDate().toLocaleString() || "-"}</td>
 
-                <td>${scores.Circle ?? 0}</td>
-                <td>${scores.Diamond ?? 0}</td>
-                <td>${scores.Rectangle ?? 0}</td>
-                <td>${scores.Square ?? 0}</td>
-                <td>${scores.Star ?? 0}</td>
-                <td>${scores.Triangle ?? 0}</td>
+                <td>${scores.Circle}</td>
+                <td>${scores.Diamond}</td>
+                <td>${scores.Rectangle}</td>
+                <td>${scores.Square}</td>
+                <td>${scores.Star}</td>
+                <td>${scores.Triangle}</td>
             </tr>
         `;
             });
@@ -145,6 +154,7 @@
             document.getElementById("tableWrapper").style.display = "block";
             document.getElementById("exportBtn").style.display = "inline-block";
         }
+
 
         /* ---------- EXPORT CSV ---------- */
         window.exportCSV = () => {
