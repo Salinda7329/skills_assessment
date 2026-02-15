@@ -165,21 +165,24 @@
                 const cols = row.querySelectorAll("td");
 
                 const rowData = [
-                    cols[1].innerText,
-                    cols[2].innerText,
-                    cols[3].innerText,
-                    cols[4].innerText,
-                    cols[5].innerText,
-                    cols[6].innerText,
-                    cols[7].innerText,
-                    cols[8].innerText,
-                    cols[9].innerText
+                    cols[1].innerText.replace(/\t/g, " ").trim(),
+                    cols[2].innerText.replace(/\t/g, " ").trim(),
+                    cols[3].innerText.replace(/\t/g, " ").trim(),
+                    cols[4].innerText.replace(/\t/g, " ").trim(),
+                    cols[5].innerText.replace(/\t/g, " ").trim(),
+                    cols[6].innerText.replace(/\t/g, " ").trim(),
+                    cols[7].innerText.replace(/\t/g, " ").trim(),
+                    cols[8].innerText.replace(/\t/g, " ").trim(),
+                    cols[9].innerText.replace(/\t/g, " ").trim()
                 ];
 
-                csv += rowData.map(value => `"${value}"`).join(",") + "\n";
+                csv += rowData
+                    .map(value => `"${value.replace(/"/g, '""')}"`)
+                    .join(",") + "\n";
             });
 
-            const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+            const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
+
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
             link.download = "quiz_users_with_scores.csv";
