@@ -6,10 +6,7 @@
     <title>Admin Panel</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="bootstrap5/css/bootstrap.min.css">
-
-    <!-- Bootstrap JS -->
     <script src="bootstrap5/js/bootstrap.bundle.min.js"></script>
 </head>
 
@@ -19,12 +16,10 @@
 
         <h3 class="mb-4">Admin Panel – Quiz Submissions</h3>
 
-        <!-- LOGIN BUTTON -->
         <button id="loginBtn" class="btn btn-primary mb-3" onclick="login()">
             Login with Google
         </button>
 
-        <!-- TABLE -->
         <div class="table-responsive" id="tableWrapper" style="display:none;">
             <table class="table table-bordered table-striped table-hover align-middle">
                 <thead class="table-dark">
@@ -45,15 +40,14 @@
             </table>
         </div>
 
-        <!-- EXPORT BUTTON -->
         <button id="exportBtn" onclick="exportCSV()" class="btn btn-success mt-3" style="display:none;">
             Export to CSV
         </button>
 
     </div>
 
-    <!-- FIREBASE LOGIC -->
     <script type="module">
+
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider }
             from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
@@ -65,11 +59,12 @@
             getDoc,
             query,
             orderBy
-        } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+        }
+            from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
         /* ---------- FIREBASE CONFIG ---------- */
         const firebaseConfig = {
-            apiKey: "AIzaSyDrCQUE307cCB-RrmuA6ei7cnyW1NUv2f0",
+            apiKey: "YOUR_API_KEY",
             authDomain: "skills-test-b33c4.firebaseapp.com",
             projectId: "skills-test-b33c4",
             storageBucket: "skills-test-b33c4.firebasestorage.app",
@@ -89,7 +84,6 @@
                 const result = await signInWithPopup(auth, provider);
                 const email = result.user.email;
 
-                // Check admin access
                 const adminRef = doc(db, "admins", email);
                 const adminSnap = await getDoc(adminRef);
 
@@ -102,14 +96,28 @@
                 document.getElementById("loginBtn").innerText = "Logged in";
 
                 loadData();
+
             } catch (err) {
                 console.error(err);
                 alert("Login failed");
             }
         };
 
-        /* ---------- LOAD DATA (NEWEST FIRST) ---------- */
+        /* ---------- FORMAT DATE SAFELY ---------- */
+        function formatDate(timestamp) {
+            if (!timestamp) return "-";
+            const d = timestamp.toDate();
+            return d.getFullYear() + "-" +
+                String(d.getMonth() + 1).padStart(2, "0") + "-" +
+                String(d.getDate()).padStart(2, "0") + " " +
+                String(d.getHours()).padStart(2, "0") + ":" +
+                String(d.getMinutes()).padStart(2, "0") + ":" +
+                String(d.getSeconds()).padStart(2, "0");
+        }
+
+        /* ---------- LOAD DATA ---------- */
         async function loadData() {
+
             const tbody = document.getElementById("tbody");
             tbody.innerHTML = "";
 
@@ -122,6 +130,7 @@
             let index = 1;
 
             snapshot.forEach(docSnap => {
+
                 const d = docSnap.data();
                 const rawScores = d.scores || {};
 
@@ -134,57 +143,64 @@
                     Triangle: rawScores.Triangle ?? rawScores.triangle ?? 0
                 };
 
-                tbody.innerHTML += `
-            <tr>
-                <td>${index++}</td>
-                <td>${d.name || "-"}</td>
-                <td>${d.countryCode || ""}${d.whatsapp || "-"}</td>
-                <td>${d.submittedAt?.toDate().toLocaleString() || "-"}</td>
+                const row = document.createElement("tr");
 
-                <td>${scores.Circle}</td>
-                <td>${scores.Diamond}</td>
-                <td>${scores.Rectangle}</td>
-                <td>${scores.Square}</td>
-                <td>${scores.Star}</td>
-                <td>${scores.Triangle}</td>
-            </tr>
+                row.innerHTML = `
+            <td>${index++}</td>
+            <td>${d.name || "-"}</td>
+            <td>${(d.countryCode || "") + (d.whatsapp || "-")}</td>
+            <td>${formatDate(d.submittedAt)}</td>
+            <td>${scores.Circle}</td>
+            <td>${scores.Diamond}</td>
+            <td>${scores.Rectangle}</td>
+            <td>${scores.Square}</td>
+            <td>${scores.Star}</td>
+            <td>${scores.Triangle}</td>
         `;
+
+                tbody.appendChild(row);
             });
 
             document.getElementById("tableWrapper").style.display = "block";
             document.getElementById("exportBtn").style.display = "inline-block";
         }
 
-
-        /* ---------- EXPORT CSV ---------- */
+        /* ---------- SAFE CSV EXPORT ---------- */
         window.exportCSV = () => {
 
             let csv = "Name,WhatsApp,Submitted At,Circle,Diamond,Rectangle,Square,Star,Triangle\n";
 
             document.querySelectorAll("#tbody tr").forEach(row => {
+
                 const cols = row.querySelectorAll("td");
 
                 const rowData = [
-                    cols[1].innerText,
-                    cols[2].innerText,
-                    cols[3].innerText,
-                    cols[4].innerText,
-                    cols[5].innerText,
-                    cols[6].innerText,
-                    cols[7].innerText,
-                    cols[8].innerText,
-                    cols[9].innerText
+                    cols[1].innerText.trim(),
+                    cols[2].innerText.trim(),
+                    cols[3].innerText.trim(),
+                    cols[4].innerText.trim(),
+                    cols[5].innerText.trim(),
+                    cols[6].innerText.trim(),
+                    cols[7].innerText.trim(),
+                    cols[8].innerText.trim(),
+                    cols[9].innerText.trim()
                 ];
 
-                csv += rowData.map(value => `"${value}"`).join(",") + "\n";
+                csv += rowData
+                    .map(value => `"${value.replace(/"/g, '""')}"`)
+                    .join(",") + "\n";
             });
 
-            const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+            const blob = new Blob(["\uFEFF" + csv], {
+                type: "text/csv;charset=utf-8;"
+            });
+
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
             link.download = "quiz_users_with_scores.csv";
             link.click();
         };
+
     </script>
 
 </body>
