@@ -158,21 +158,25 @@
 
         /* ---------- EXPORT CSV ---------- */
         window.exportCSV = () => {
+
             let csv = "Name,WhatsApp,Submitted At,Circle,Diamond,Rectangle,Square,Star,Triangle\n";
 
             document.querySelectorAll("#tbody tr").forEach(row => {
                 const cols = row.querySelectorAll("td");
 
-                csv += `"${cols[1].innerText}",
-                "${cols[2].innerText}",
-                "${cols[3].innerText}",
-                "${cols[4].innerText}",
-                "${cols[5].innerText}",
-                "${cols[6].innerText}",
-                "${cols[7].innerText}",
-                "${cols[8].innerText}",
-                "${cols[9].innerText}"
-        \n`;
+                const rowData = [
+                    cols[1].innerText,
+                    cols[2].innerText,
+                    cols[3].innerText,
+                    cols[4].innerText,
+                    cols[5].innerText,
+                    cols[6].innerText,
+                    cols[7].innerText,
+                    cols[8].innerText,
+                    cols[9].innerText
+                ];
+
+                csv += rowData.map(value => `"${value}"`).join(",") + "\n";
             });
 
             const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
